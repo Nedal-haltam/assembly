@@ -13,7 +13,7 @@ _start:
     syscall
 
     mov rax, SYS_EXIT
-    mov rdi, 0
+    mov rdi, 123
     syscall
 
 section .data

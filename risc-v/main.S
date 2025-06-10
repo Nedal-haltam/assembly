@@ -2,23 +2,24 @@
 .equ SYS_EXIT, 93
 
 num:
-	.word 1234567890
+	.word 123456789
 newline:
 	.string "\n"
 msg:
-	.string "Hello, world\n"
+	.string "Hello, world, my name is nedal\n"
 
 .section .bss
 buffer:     
-	.space 12    # 10 digits max + null + 1 for safety
+	.space 32
 
 .section .text
 .globl _start
 
 _start:
-    li a0, 1
     la a1, msg
-    li a2, 13
+	call strlen
+	mv a2, a0	
+    li a0, 1
 	call write
 
     # Load number and convert it to string
@@ -47,13 +48,12 @@ _start:
 	call exit
 
 # --------------------------------------
-# itoa: converts a1 (int) to string at a0 (buffer)
-# returns: buffer address in a0
+# itoa: converts integer in a1 to string in buffer at a0
+# inputs: a0 = buffer address, a1 = integer to convert
+# outputs: a0 = pointer to string in buffer
 itoa:
-    addi sp, sp, -16
-    sw ra, 12(sp)
-    sw t1, 8(sp)
-    sw t2, 4(sp)
+    addi sp, sp, -8
+    sw ra, 8(sp)
 
     mv t1, a1            # number to convert
     addi t2, a0, 11      # write digits from end
@@ -82,12 +82,11 @@ copy_loop:
 copy_done:
     sb zero, 0(t3)
 
-    lw ra, 12(sp)
-    lw t1, 8(sp)
-    lw t2, 4(sp)
-    addi sp, sp, 16
+    lw ra, 8(sp)
+    addi sp, sp, 8
     la a0, buffer        # return buffer pointer
     ret
+
 
 # --------------------------------------
 # strlen: calculates length of string in a1

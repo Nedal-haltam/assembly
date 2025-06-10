@@ -1,6 +1,6 @@
 
 build: clean
-	nasm -felf64 -o main.o main.asm
+	nasm -felf64 -o main.o main.S
 	ld -o main main.o
 
 clean:
