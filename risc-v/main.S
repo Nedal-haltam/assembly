@@ -1,64 +1,183 @@
 .equ SYS_WRITE, 64
 .equ SYS_EXIT, 93
-
-num:
-	.word 123456789
-newline:
-	.string "\n"
-msg:
-	.string "Hello, world, my name is nedal\n"
-
-.section .bss
-buffer:     
-	.space 32
-
 .section .text
-.globl _start
-
-_start:
-    la a1, msg
-	call strlen
-	mv a2, a0	
-    li a0, 1
-	call write
-
-    # Load number and convert it to string
-    la a0, buffer        # buffer address
-    la t0, num
-    lw a1, 0(t0)         # load integer into a1
-    call itoa            # convert to string
-
-    # Calculate string length
-    mv a1, a0            # a0 = pointer to string; move to a1
-    call strlen
-    mv a2, a0            # a2 = length
-    li a0, 1             # stdout
-    li a7, SYS_WRITE
-    la a1, buffer        # buffer contains the string
-    ecall
-
-    # Print newline
-    li a0, 1
-    la a1, newline
-    li a2, 1
-    call write
-
-    # Exit
-    li a0, 0
-	call exit
-
-# --------------------------------------
-# itoa: converts integer in a1 to string in buffer at a0
-# inputs: a0 = buffer address, a1 = integer to convert
-# outputs: a0 = pointer to string in buffer
-itoa:
+.globl main
+main:
+# begin scope
+    la a0, StringLits0
+    addi sp, sp, -16
+    sw a0, 0(sp)
+    sw a1, 8(sp)
+    ADDI a0, zero, 123
+    ADDI a1, zero, 456
+    call foo
+    lw a1, 8(sp)
+    lw a0, 0(sp)
+    addi sp, sp, 16
+    mv a1, s0
+    call printf
+    call Print10sMultiple
+# end scope
+    ADDI a0, zero, 0
+    call exit
+foo:
     addi sp, sp, -8
-    sw ra, 8(sp)
-
-    mv t1, a1            # number to convert
-    addi t2, a0, 11      # write digits from end
-    sb zero, 0(t2)       # null terminator
-
+    sw ra, 0(sp)
+# begin scope
+########## b
+    mv t0, a1
+    addi sp, sp, -8
+    sw t0, 0(sp)
+########## a
+    mv s0, a0
+    lw t1, 0(sp)
+    addi sp, sp, 8
+    ADD s0, s0, t1
+    lw ra, 0(sp)
+    addi sp, sp, 8
+    ret
+# end scope
+    li s0, 0
+    lw ra, 0(sp)
+    addi sp, sp, 8
+    ret
+Print10sMultiple:
+    addi sp, sp, -8
+    sw ra, 0(sp)
+# begin scope
+    ADDI t0, zero, 1
+    addi sp, sp, -8
+    sw t0, 0(sp)
+    ADDI t0, zero, 0
+    addi sp, sp, -8
+    sw t0, 0(sp)
+    ADDI t0, zero, 1000
+    addi sp, sp, -8
+    sw t0, 0(sp)
+# begin forloop
+# begin scope
+# begin init
+    ADDI t0, zero, 1
+    addi sp, sp, -8
+    sw t0, 0(sp)
+# end init
+# begin condition
+TEMP_LABEL0_START:
+    ADDI t0, zero, 1
+    addi sp, sp, -8
+    sw t0, 0(sp)
+########## bound
+    LW t0, 16(sp)
+    lw t1, 0(sp)
+    addi sp, sp, 8
+    ADD t0, t0, t1
+    addi sp, sp, -8
+    sw t0, 0(sp)
+########## i
+    LW t0, 8(sp)
+    lw t1, 0(sp)
+    addi sp, sp, 8
+    SLT t0, t0, t1
+    BEQ t0, zero, TEMP_LABEL1_END
+# end condition
+# begin scope
+    addi sp, sp, -8
+    sw a0, 0(sp)
+    addi sp, sp, -8
+    sw a0, 0(sp)
+########## x
+    LW a0, 40(sp)
+    call itoa
+    lw a0, 0(sp)
+    addi sp, sp, 8
+    mv a0, s0
+    call strlen
+    lw a0, 0(sp)
+    addi sp, sp, 8
+    mv t0, s0
+    addi sp, sp, -8
+    sw t0, 0(sp)
+LABEL3_START:
+########## len
+    LW t0, 0(sp)
+    addi sp, sp, -8
+    sw t0, 0(sp)
+########## count
+    LW t0, 32(sp)
+    lw t1, 0(sp)
+    addi sp, sp, 8
+    XOR t0, t0, t1
+    SNEZ t0, t0
+    BEQ t0, zero, LABEL5_elifs
+# begin scope
+    la a0, StringLits1
+########## x
+    LW a1, 32(sp)
+    call printf
+    la a0, StringLits2
+########## x
+    LW a1, 32(sp)
+    call printf
+    la a0, StringLits3
+########## len
+    LW a1, 0(sp)
+    call printf
+########## len
+    LW t0, 0(sp)
+    SW t0, 24(sp)
+# end scope
+LABEL5_elifs:
+LABEL4_END:
+    ADDI t0, zero, 1
+    addi sp, sp, -8
+    sw t0, 0(sp)
+########## x
+    LW t0, 40(sp)
+    lw t1, 0(sp)
+    addi sp, sp, 8
+    ADD t0, t0, t1
+    SW t0, 32(sp)
+# end scope
+    ADDI sp, sp, 8
+# begin update
+TEMP_LABEL2_START:
+    ADDI t0, zero, 1
+    addi sp, sp, -8
+    sw t0, 0(sp)
+########## i
+    LW t0, 8(sp)
+    lw t1, 0(sp)
+    addi sp, sp, 8
+    ADD t0, t0, t1
+    SW t0, 0(sp)
+# end update
+    J TEMP_LABEL0_START
+TEMP_LABEL1_END:
+# end scope
+    ADDI sp, sp, 8
+# end forloop
+# end scope
+    ADDI sp, sp, 24
+    li s0, 0
+    lw ra, 0(sp)
+    addi sp, sp, 8
+    ret
+strlen:
+    mv t0, a0
+    li s0, 0
+strlen_loop:
+    lbu t1, 0(t0)
+    beqz t1, strlen_done
+    addi s0, s0, 1
+    addi t0, t0, 1
+    j strlen_loop
+strlen_done:
+    ret
+itoa:
+    mv t1, a0
+    la t2, itoaTempBuffer
+    addi t2, t2, 32
+    sb zero, 0(t2)
 itoa_loop:
     beqz t1, itoa_done
     li t3, 10
@@ -69,47 +188,18 @@ itoa_loop:
     div t1, t1, t3
     j itoa_loop
 itoa_done:
-    mv a0, t2            # a0 = pointer to start of string
-    # Copy result to beginning of buffer
-    la t3, buffer
-copy_loop:
-    lbu t4, 0(a0)
-    beqz t4, copy_done
-    sb t4, 0(t3)
-    addi a0, a0, 1
-    addi t3, t3, 1
-    j copy_loop
-copy_done:
-    sb zero, 0(t3)
-
-    lw ra, 8(sp)
-    addi sp, sp, 8
-    la a0, buffer        # return buffer pointer
+    mv s0, t2
     ret
-
-
-# --------------------------------------
-# strlen: calculates length of string in a1
-# returns length in a0
-strlen:
-    mv t0, a1
-    li a0, 0
-strlen_loop:
-    lbu t1, 0(t0)
-    beqz t1, strlen_done
-    addi a0, a0, 1
-    addi t0, t0, 1
-    j strlen_loop
-strlen_done:
-    ret
-
-
-write:
-    li a7, SYS_WRITE
-    ecall
-	ret
-
-exit:
-	li a7, SYS_EXIT
-	ecall
-	ret
+.section .data
+StringLits0:
+    .string "return of foo is : %d\n"
+StringLits1:
+    .string "number = %d\n"
+StringLits2:
+    .string " number = %d\n"
+StringLits3:
+    .string "new len = %d\n"
+.section .bss
+itoaTempBuffer:     
+    .space 32
+.extern printf

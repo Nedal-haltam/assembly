@@ -5,6 +5,3 @@ build:
 
 run:
 	@powershell -Command "./main.exe; Write-Host -NoNewline 'Exit code: '; Write-Host $$LASTEXITCODE"
-
-
-
