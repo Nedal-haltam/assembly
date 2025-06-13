@@ -13,6 +13,8 @@ examples: dummy
 	qemu-riscv64 ./examples/HelloWorld
 	riscv64-linux-gnu-gcc -o ./examples/Print10sMultipleAndLengths ./examples/Print10sMultipleAndLengths.S -static
 	qemu-riscv64 ./examples/Print10sMultipleAndLengths
+	riscv64-linux-gnu-gcc -o ./examples/ManipulateArrays ./examples/ManipulateArrays.S -static
+	qemu-riscv64 ./examples/ManipulateArrays
 
 
 dummy:
