@@ -1,8 +1,7 @@
 
 
-build:
+main: dummy
 	riscv64-linux-gnu-gcc -o main main.S -static
-run:
 	qemu-riscv64 ./main
 
 examples: dummy
@@ -12,6 +11,7 @@ examples: dummy
 	qemu-riscv64 ./examples/misc
 	riscv64-linux-gnu-gcc -o ./examples/gol ./examples/gol.S -static
 	qemu-riscv64 ./examples/gol
+
 
 dummy:
 
