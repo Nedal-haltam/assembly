@@ -4,44 +4,80 @@
 .globl main
 main:
 # begin scope
-    la a0, StringLits0
+    la t0, StringLits0
+    ADDI sp, sp, -8
+    SD t0, 0(sp)
+    LD a0, 0(sp)
+    ADDI sp, sp, 8
     ADDI sp, sp, -16
     SD a0, 0(sp)
     SD a1, 8(sp)
-    LI a0, 123
-    LI a1, 456
+    LI t0, 123
+    ADDI sp, sp, -8
+    SD t0, 0(sp)
+    LD a0, 0(sp)
+    ADDI sp, sp, 8
+    LI t0, 456
+    ADDI sp, sp, -8
+    SD t0, 0(sp)
+    LD a1, 0(sp)
+    ADDI sp, sp, 8
     call foo
     LD a1, 8(sp)
     LD a0, 0(sp)
     ADDI sp, sp, 16
-    mv a1, s0
+    mv t0, s0
+    ADDI sp, sp, -8
+    SD t0, 0(sp)
+    LD a1, 0(sp)
+    ADDI sp, sp, 8
     call printf
-    call Print10sMultiple
+    call Print10sMultipleAndLengths
 # end scope
     ADDI a0, zero, 0
     call exit
 foo:
     ADDI sp, sp, -8
     SD ra, 0(sp)
+    ADDI sp, sp, -8
+    SD a0, 0(sp)
+    ADDI sp, sp, -8
+    SD a1, 0(sp)
 # begin scope
 ########## b
-    mv t0, a1
+    LD t0, 0(sp)
     ADDI sp, sp, -8
     SD t0, 0(sp)
 ########## a
-    mv s0, a0
+    LD t0, 16(sp)
+    ADDI sp, sp, -8
+    SD t0, 0(sp)
+    LD t0, 0(sp)
+    ADDI sp, sp, 8
     LD t1, 0(sp)
     ADDI sp, sp, 8
-    ADD s0, s0, t1
+    ADD t0, t0, t1
+    ADDI sp, sp, -8
+    SD t0, 0(sp)
+    LD s0, 0(sp)
+    ADDI sp, sp, 8
+    LD a0, 0(sp)
+    ADDI sp, sp, 8
+    LD a1, 0(sp)
+    ADDI sp, sp, 8
     LD ra, 0(sp)
     ADDI sp, sp, 8
     ret
 # end scope
-    li s0, 0
+    ADDI sp, sp, 16
+    LD a0, 0(sp)
+    ADDI sp, sp, 8
+    LD a1, 0(sp)
+    ADDI sp, sp, 8
     LD ra, 0(sp)
     ADDI sp, sp, 8
     ret
-Print10sMultiple:
+Print10sMultipleAndLengths:
     ADDI sp, sp, -8
     SD ra, 0(sp)
 # begin scope
@@ -68,6 +104,10 @@ TEMP_LABEL0_START:
     SD t0, 0(sp)
 ########## bound
     LD t0, 16(sp)
+    ADDI sp, sp, -8
+    SD t0, 0(sp)
+    LD t0, 0(sp)
+    ADDI sp, sp, 8
     LD t1, 0(sp)
     ADDI sp, sp, 8
     ADD t0, t0, t1
@@ -75,9 +115,17 @@ TEMP_LABEL0_START:
     SD t0, 0(sp)
 ########## i
     LD t0, 8(sp)
+    ADDI sp, sp, -8
+    SD t0, 0(sp)
+    LD t0, 0(sp)
+    ADDI sp, sp, 8
     LD t1, 0(sp)
     ADDI sp, sp, 8
     SLT t0, t0, t1
+    ADDI sp, sp, -8
+    SD t0, 0(sp)
+    LD t0, 0(sp)
+    ADDI sp, sp, 8
     BEQZ t0, TEMP_LABEL1_END
 # end condition
 # begin scope
@@ -86,11 +134,19 @@ TEMP_LABEL0_START:
     ADDI sp, sp, -8
     SD a0, 0(sp)
 ########## x
-    LD a0, 40(sp)
+    LD t0, 40(sp)
+    ADDI sp, sp, -8
+    SD t0, 0(sp)
+    LD a0, 0(sp)
+    ADDI sp, sp, 8
     call itoa
     LD a0, 0(sp)
     ADDI sp, sp, 8
-    mv a0, s0
+    mv t0, s0
+    ADDI sp, sp, -8
+    SD t0, 0(sp)
+    LD a0, 0(sp)
+    ADDI sp, sp, 8
     call strlen
     LD a0, 0(sp)
     ADDI sp, sp, 8
@@ -104,22 +160,50 @@ LABEL3_START:
     SD t0, 0(sp)
 ########## count
     LD t0, 32(sp)
+    ADDI sp, sp, -8
+    SD t0, 0(sp)
+    LD t0, 0(sp)
+    ADDI sp, sp, 8
     LD t1, 0(sp)
     ADDI sp, sp, 8
     XOR t0, t0, t1
     SNEZ t0, t0
+    ADDI sp, sp, -8
+    SD t0, 0(sp)
+    LD t0, 0(sp)
+    ADDI sp, sp, 8
     BEQZ t0, LABEL5_elifs
 # begin scope
-    la a0, StringLits1
+    la t0, StringLits1
+    ADDI sp, sp, -8
+    SD t0, 0(sp)
+    LD a0, 0(sp)
+    ADDI sp, sp, 8
 ########## x
-    LD a1, 32(sp)
-    call printf
-    la a0, StringLits2
-########## len
+    LD t0, 32(sp)
+    ADDI sp, sp, -8
+    SD t0, 0(sp)
     LD a1, 0(sp)
+    ADDI sp, sp, 8
+    call printf
+    la t0, StringLits2
+    ADDI sp, sp, -8
+    SD t0, 0(sp)
+    LD a0, 0(sp)
+    ADDI sp, sp, 8
+########## len
+    LD t0, 0(sp)
+    ADDI sp, sp, -8
+    SD t0, 0(sp)
+    LD a1, 0(sp)
+    ADDI sp, sp, 8
     call printf
 ########## len
     LD t0, 0(sp)
+    ADDI sp, sp, -8
+    SD t0, 0(sp)
+    LD t0, 0(sp)
+    ADDI sp, sp, 8
     SD t0, 24(sp)
 # end scope
 LABEL5_elifs:
@@ -129,9 +213,17 @@ LABEL4_END:
     SD t0, 0(sp)
 ########## x
     LD t0, 40(sp)
+    ADDI sp, sp, -8
+    SD t0, 0(sp)
+    LD t0, 0(sp)
+    ADDI sp, sp, 8
     LD t1, 0(sp)
     ADDI sp, sp, 8
     ADD t0, t0, t1
+    ADDI sp, sp, -8
+    SD t0, 0(sp)
+    LD t0, 0(sp)
+    ADDI sp, sp, 8
     SD t0, 32(sp)
 # end scope
     ADDI sp, sp, 8
@@ -142,9 +234,17 @@ TEMP_LABEL2_START:
     SD t0, 0(sp)
 ########## i
     LD t0, 8(sp)
+    ADDI sp, sp, -8
+    SD t0, 0(sp)
+    LD t0, 0(sp)
+    ADDI sp, sp, 8
     LD t1, 0(sp)
     ADDI sp, sp, 8
     ADD t0, t0, t1
+    ADDI sp, sp, -8
+    SD t0, 0(sp)
+    LD t0, 0(sp)
+    ADDI sp, sp, 8
     SD t0, 0(sp)
 # end update
     J TEMP_LABEL0_START
@@ -154,7 +254,6 @@ TEMP_LABEL1_END:
 # end forloop
 # end scope
     ADDI sp, sp, 24
-    li s0, 0
     LD ra, 0(sp)
     ADDI sp, sp, 8
     ret

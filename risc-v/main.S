@@ -4,8 +4,11 @@
 .globl main
 main:
 # begin scope
-    la a0, StringLits0
-    call printf
+    LI t0, 0
+    ADDI sp, sp, -8
+    SD t0, 0(sp)
+    LD s0, 0(sp)
+    ADDI sp, sp, 8
 # end scope
     ADDI a0, zero, 0
     call exit
@@ -42,8 +45,6 @@ itoa_done:
     mv s0, t2
     ret
 .section .data
-StringLits0:
-    .string "Hello World!\n"
 .section .bss
 itoaTempBuffer:     
     .space 32

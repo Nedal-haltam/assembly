@@ -4,37 +4,18 @@
 .globl main
 main:
 # begin scope
-    la a0, StringLits0
-    call printf
-    LI t0, 123
+    la t0, StringLits0
     ADDI sp, sp, -8
     SD t0, 0(sp)
-    LI t0, 465
-    ADDI sp, sp, -8
-    SD t0, 0(sp)
-    la a0, StringLits1
-########## x
-    LD a1, 8(sp)
-    call printf
-    la a0, StringLits2
-########## y
-    LD a1, 0(sp)
-    call printf
-    la a0, StringLits3
-########## y
-    LD t0, 0(sp)
-    ADDI sp, sp, -8
-    SD t0, 0(sp)
-########## x
-    LD a1, 16(sp)
-    LD t1, 0(sp)
+    LD a0, 0(sp)
     ADDI sp, sp, 8
-    ADD a1, a1, t1
     call printf
-    la a0, StringLits4
-    call printf
+    LI t0, 0
+    ADDI sp, sp, -8
+    SD t0, 0(sp)
+    LD s0, 0(sp)
+    ADDI sp, sp, 8
 # end scope
-    ADDI sp, sp, 16
     ADDI a0, zero, 0
     call exit
 exit:
@@ -72,14 +53,6 @@ itoa_done:
 .section .data
 StringLits0:
     .string "Hello, World!\n"
-StringLits1:
-    .string "x = %d\n"
-StringLits2:
-    .string "y = %d\n"
-StringLits3:
-    .string "x + y = %d\n"
-StringLits4:
-    .string "Good Bye\n"
 .section .bss
 itoaTempBuffer:     
     .space 32

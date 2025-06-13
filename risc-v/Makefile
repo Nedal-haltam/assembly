@@ -5,12 +5,14 @@ main: dummy
 	qemu-riscv64 ./main
 
 examples: dummy
-	riscv64-linux-gnu-gcc -o ./examples/basic ./examples/basic.S -static
-	qemu-riscv64 ./examples/basic
-	riscv64-linux-gnu-gcc -o ./examples/misc ./examples/misc.S -static
-	qemu-riscv64 ./examples/misc
-	riscv64-linux-gnu-gcc -o ./examples/gol ./examples/gol.S -static
-	qemu-riscv64 ./examples/gol
+	riscv64-linux-gnu-gcc -o ./examples/GOL ./examples/GOL.S -static
+	qemu-riscv64 ./examples/GOL
+	riscv64-linux-gnu-gcc -o ./examples/rule110 ./examples/rule110.S -static
+	qemu-riscv64 ./examples/rule110
+	riscv64-linux-gnu-gcc -o ./examples/HelloWorld ./examples/HelloWorld.S -static
+	qemu-riscv64 ./examples/HelloWorld
+	riscv64-linux-gnu-gcc -o ./examples/Print10sMultipleAndLengths ./examples/Print10sMultipleAndLengths.S -static
+	qemu-riscv64 ./examples/Print10sMultipleAndLengths
 
 
 dummy:
